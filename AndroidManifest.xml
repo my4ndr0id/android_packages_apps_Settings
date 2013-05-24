@@ -1494,7 +1494,9 @@
         <!-- Select Subscription (SUB1 or SUB2) Screen -->
         <activity android:name=".SelectSubscription"
                 android:label="@string/select_subscription"
-                android:clearTaskOnLaunch="true">
+                android:clearTaskOnLaunch="true"
+                android:noHistory="true"
+                android:theme="@android:style/Theme.Holo.Dialog">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
