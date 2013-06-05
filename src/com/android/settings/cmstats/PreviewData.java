@@ -19,6 +19,7 @@ package com.android.settings.cmstats;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
+import android.telephony.MSimTelephonyManager;
 
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
@@ -64,8 +65,26 @@ public class PreviewData extends SettingsPreferenceFragment
             mId.setSummary(Utilities.getUniqueID(getActivity().getApplicationContext()));
             mDevice.setSummary(Utilities.getDevice());
             mVersion.setSummary(Utilities.getModVersion());
-            mCountry.setSummary(Utilities.getCountryCode(getActivity().getApplicationContext()));
-            mCarrier.setSummary(Utilities.getCarrier(getActivity().getApplicationContext()));
+
+            if (MSimTelephonyManager.getDefault().isMultiSimEnabled()) {
+                int phoneCount = MSimTelephonyManager.getDefault().getPhoneCount();
+                for (int i = 0; i < phoneCount; i++) {
+                    if (MSimTelephonyManager.getDefault().isSubActive(i)) {
+                        mCarrier.setSummary(Utilities.getCarrier(
+                                getActivity().getApplicationContext(), i));
+                        mCountry.setSummary(Utilities.getCountryCode(
+                                getActivity().getApplicationContext(), i));
+                        break;
+                    }
+                    mCarrier.setSummary(Utilities.CARRIER_UNKNOWN);
+                    mCountry.setSummary(Utilities.COUNTRY_UNKNOWN);
+                }
+            } else {
+                mCarrier.setSummary(Utilities.getCarrier(
+                        getActivity().getApplicationContext(), -1));
+                mCountry.setSummary(Utilities.getCountryCode(
+                        getActivity().getApplicationContext(), -1));
+            }
         }
     }
 

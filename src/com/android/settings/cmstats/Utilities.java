@@ -24,38 +24,72 @@ import android.content.Context;
 import android.os.SystemProperties;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.telephony.MSimTelephonyManager;
 
 public class Utilities {
+    public static final String CARRIER_UNKNOWN = "Unknown";
+    public static final String CARRIER_ID_UNKNOWN = "0";
+    public static final String COUNTRY_UNKNOWN = "Unknown";
+
     public static String getUniqueID(Context ctx) {
         return digest(ctx.getPackageName() + Settings.Secure.getString(ctx.getContentResolver(), Settings.Secure.ANDROID_ID));
     }
 
-    public static String getCarrier(Context ctx) {
+    public static String getCarrier(Context ctx, int subscription) {
+        final String carrier;
         TelephonyManager tm = (TelephonyManager) ctx
                 .getSystemService(Context.TELEPHONY_SERVICE);
-        String carrier = tm.getNetworkOperatorName();
+        MSimTelephonyManager mSimTm = (MSimTelephonyManager) ctx
+                .getSystemService(Context.MSIM_TELEPHONY_SERVICE);
+
+        if (mSimTm.isMultiSimEnabled()) {
+            carrier = mSimTm.getNetworkOperatorName(subscription);
+        } else {
+            carrier = tm.getNetworkOperatorName();
+        }
+
         if ("".equals(carrier)) {
-            carrier = "Unknown";
+            return CARRIER_UNKNOWN;
         }
         return carrier;
     }
 
-    public static String getCarrierId(Context ctx) {
+    public static String getCarrierId(Context ctx, int subscription) {
+        final String carrierId;
         TelephonyManager tm = (TelephonyManager) ctx
                 .getSystemService(Context.TELEPHONY_SERVICE);
-        String carrierId = tm.getNetworkOperator();
+        MSimTelephonyManager mSimTm = (MSimTelephonyManager) ctx
+                .getSystemService(Context.MSIM_TELEPHONY_SERVICE);
+
+
+        if (mSimTm.isMultiSimEnabled()) {
+            carrierId = mSimTm.getNetworkOperator(subscription);
+        } else {
+            carrierId = tm.getNetworkOperator();
+        }
+
         if ("".equals(carrierId)) {
-            carrierId = "0";
+            return CARRIER_ID_UNKNOWN;
         }
         return carrierId;
     }
 
-    public static String getCountryCode(Context ctx) {
+    public static String getCountryCode(Context ctx, int subscription) {
+        final String countryCode;
         TelephonyManager tm = (TelephonyManager) ctx
                 .getSystemService(Context.TELEPHONY_SERVICE);
-        String countryCode = tm.getNetworkCountryIso();
+        MSimTelephonyManager mSimTm = (MSimTelephonyManager) ctx
+                .getSystemService(Context.MSIM_TELEPHONY_SERVICE);
+
+
+        if (mSimTm.isMultiSimEnabled()) {
+            countryCode = mSimTm.getNetworkCountryIso(subscription);
+        } else {
+            countryCode = tm.getNetworkCountryIso();
+        }
+
         if (countryCode.equals("")) {
-            countryCode = "Unknown";
+            return COUNTRY_UNKNOWN;
         }
         return countryCode;
     }

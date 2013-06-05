@@ -34,6 +34,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.telephony.MSimTelephonyManager;
 import android.util.Log;
 
 import com.android.settings.R;
@@ -69,9 +70,32 @@ public class ReportingService extends Service {
         String deviceId = Utilities.getUniqueID(getApplicationContext());
         String deviceName = Utilities.getDevice();
         String deviceVersion = Utilities.getModVersion();
-        String deviceCountry = Utilities.getCountryCode(getApplicationContext());
-        String deviceCarrier = Utilities.getCarrier(getApplicationContext());
-        String deviceCarrierId = Utilities.getCarrierId(getApplicationContext());
+
+        String deviceCarrier = Utilities.CARRIER_UNKNOWN;
+        String deviceCarrierId = Utilities.CARRIER_ID_UNKNOWN;
+        String deviceCountry = Utilities.COUNTRY_UNKNOWN;
+
+        if (MSimTelephonyManager.getDefault().isMultiSimEnabled()) {
+            int phoneCount = MSimTelephonyManager.getDefault().getPhoneCount();
+            for (int i = 0; i < phoneCount; i++) {
+                if (MSimTelephonyManager.getDefault().isSubActive(i)) {
+                    deviceCarrier = Utilities.getCarrier(
+                            getApplicationContext(), i);
+                    deviceCarrierId = Utilities.getCarrierId(
+                            getApplicationContext(), i);
+                    deviceCountry = Utilities.getCountryCode(
+                            getApplicationContext(), i);
+                    break;
+                }
+            }
+        } else {
+            deviceCarrier = Utilities.getCarrier(
+                    getApplicationContext(), -1);
+            deviceCarrierId = Utilities.getCarrierId(
+                    getApplicationContext(), -1);
+            deviceCountry = Utilities.getCountryCode(
+                    getApplicationContext(), -1);
+        }
 
         Log.d(TAG, "SERVICE: Device ID=" + deviceId);
         Log.d(TAG, "SERVICE: Device Name=" + deviceName);
