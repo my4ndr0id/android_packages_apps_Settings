@@ -37,15 +37,10 @@ public class Utilities {
 
     public static String getCarrier(Context ctx, int subscription) {
         final String carrier;
-        TelephonyManager tm = (TelephonyManager) ctx
-                .getSystemService(Context.TELEPHONY_SERVICE);
-        MSimTelephonyManager mSimTm = (MSimTelephonyManager) ctx
-                .getSystemService(Context.MSIM_TELEPHONY_SERVICE);
-
-        if (mSimTm.isMultiSimEnabled()) {
-            carrier = mSimTm.getNetworkOperatorName(subscription);
+        if (MSimTelephonyManager.getDefault().isMultiSimEnabled()) {
+            carrier = MSimTelephonyManager.getDefault().getNetworkOperatorName(subscription);
         } else {
-            carrier = tm.getNetworkOperatorName();
+            carrier = TelephonyManager.getDefault().getNetworkOperatorName();
         }
 
         if ("".equals(carrier)) {
@@ -56,16 +51,10 @@ public class Utilities {
 
     public static String getCarrierId(Context ctx, int subscription) {
         final String carrierId;
-        TelephonyManager tm = (TelephonyManager) ctx
-                .getSystemService(Context.TELEPHONY_SERVICE);
-        MSimTelephonyManager mSimTm = (MSimTelephonyManager) ctx
-                .getSystemService(Context.MSIM_TELEPHONY_SERVICE);
-
-
-        if (mSimTm.isMultiSimEnabled()) {
-            carrierId = mSimTm.getNetworkOperator(subscription);
+        if (MSimTelephonyManager.getDefault().isMultiSimEnabled()) {
+            carrierId = MSimTelephonyManager.getDefault().getNetworkOperator(subscription);
         } else {
-            carrierId = tm.getNetworkOperator();
+            carrierId = TelephonyManager.getDefault().getNetworkOperator();
         }
 
         if ("".equals(carrierId)) {
@@ -76,16 +65,10 @@ public class Utilities {
 
     public static String getCountryCode(Context ctx, int subscription) {
         final String countryCode;
-        TelephonyManager tm = (TelephonyManager) ctx
-                .getSystemService(Context.TELEPHONY_SERVICE);
-        MSimTelephonyManager mSimTm = (MSimTelephonyManager) ctx
-                .getSystemService(Context.MSIM_TELEPHONY_SERVICE);
-
-
-        if (mSimTm.isMultiSimEnabled()) {
-            countryCode = mSimTm.getNetworkCountryIso(subscription);
+        if (MSimTelephonyManager.getDefault().isMultiSimEnabled()) {
+            countryCode = MSimTelephonyManager.getDefault().getNetworkCountryIso(subscription);
         } else {
-            countryCode = tm.getNetworkCountryIso();
+            countryCode = TelephonyManager.getDefault().getNetworkCountryIso();
         }
 
         if (countryCode.equals("")) {
