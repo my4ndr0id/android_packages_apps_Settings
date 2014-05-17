@@ -2581,6 +2581,17 @@ alog [CHAR LIMIT=none] -->
     <!-- Tethering help button - calls up a web view with general tethering info -->
     <string name="tethering_help_button_text">Help</string>
 
+    <!-- Advanced tethering settings -->
+    <string name="tethering_advanced_text">Advanced</string>
+    <string name="tethering_lease_time_text">DHCP lease time</string>
+    <string name="dhcp_lease_30mn">30 minutes</string>
+    <string name="dhcp_lease_1h">1 hour (default)</string>
+    <string name="dhcp_lease_2h">2 hours</string>
+    <string name="dhcp_lease_4h">4 hours</string>
+    <string name="dhcp_lease_6h">6 hours</string>
+    <string name="dhcp_lease_12h">12 hours</string>
+    <string name="dhcp_lease_24h">24 hours</string>
+
     <!-- Wireless controls, item title to go into the network settings -->
     <string name="network_settings_title">Mobile networks</string>
 
@@ -4297,7 +4308,71 @@ found in the list of installed apps.</string>
 
     <!-- Representation of a numerical percentage. [CHAR LIMIT=8] -->
     <string name="percentage"><xliff:g id="number" example="30">%d</xliff:g>%%</string>
-    <!-- Multi Sim Settings screen, Select Sub label -->
+        <!-- Electron Beam -->
+    <string name="display_category_animation_options_title">Animation</string>
+    <string name="display_electron_beam_animation_on_title">Screen-on animation</string>
+    <string name="display_electron_beam_animation_off_title">Screen-off animation</string>
+
+    <!-- Wakeup options -->
+    <string name="display_category_wakeup_options_title">Wakeup options</string>
+    <string name="pref_volume_wake_title">Volume rocker wake</string>
+    <string name="pref_volume_wake_summary">Pressing the volume rocker up/down will wake the device</string>
+
+    <string name="profile_write_nfc_tag">Write to NFC tag</string>
+    <string name="profile_write_touch_tag">Touch tag to write</string>
+    <string name="profile_write_success">Tag successfully written</string>
+    <string name="profile_write_failed">Tag writing failed!</string>
+    <string name="profile_selected">Profile selected: %1$s</string>
+    <string name="profile_nfc_text">Writing a profile to a NFC tag allows for tapping the tag to select the profile. Tapping a second time will select the previously selected profile.</string>
+    <string name="profile_unknown_nfc_tag">Unknown profile</string>
+    <string name="profile_add_nfc_text">This NFC tag refers to an unknown profile. Attaching this NFC tag to an existing profile will allow for selecting the profile in the future.</string>
+    <string name="profile_select">Select profile</string>
+
+    <!-- Stylus Icon -->
+    <string name="stylus_icon_enabled_title">Show icon when using stylus</string>
+    <string name="stylus_icon_enabled_summary">Show the pointer icon when hovering or drawing with the stylus</string>
+
+    <!-- Hostname setting -->
+    <string name="device_hostname">Device hostname</string>
+
+    <!-- Status bar notification count -->
+    <string name="status_bar_notif_count_title">Show notification count</string>
+    <string name="status_bar_notif_count_summary">Display number of pending notifications on the status bar</string>
+
+    <!-- Mobile networks, item title to go into the network settings -->
+    <string name="subscription_01_title">SUB 1</string>
+    <!-- Mobile networks, the item summary for the user to go into the network settings -->
+    <string name="subscription_01_summary">Set options for SUB1 network settings</string>
+    <!-- Mobile networks, item title to go into the network settings -->
+    <string name="subscription_02_title">SUB 2</string>
+    <!-- Mobile networks, the item summary for the user to go into the network settings -->
+    <string name="subscription_02_summary">Set options for SUB2 network settings</string>
+
+    <!-- A menu item in "About phone" that allows the user to update the phone with settings
+    from their cell phone carrier. The use of the string is similar to the string
+    "system_update_settings_list_item_title" in this project. [CHAR LIMIT=25] -->
+    <string name="additional_system_update_settings_list_item_title">Additional system updates</string>
+
+    <string name="increasing_ring_title">Ascending ringtone</string>
+    <!-- Sound settings screen, the caption of the checkbox for making incoming calls increase in volume -->
+    <string name="checkbox_increasing_ring">Enable</string>
+    <!-- Sound settings screen, the title of the volume bar to adjust the minimum increasing ring volume -->
+    <string name="increasing_ring_min_volume_title">Ringing start volume</string>
+    <string name="increasing_ring_volume_notice">Notice:\nAs the start volume is set higher than the ringer volume, the ring tone will be played using the ringer volume.</string>
+    <string name="increasing_ring_interval_title">Increase interval</string>
+    <string name="increasing_ring_interval_eachring">On each ring</string>
+    <string name="increasing_ring_interval_half_second">0.5 seconds</string>
+    <string name="increasing_ring_interval_1second">1 second</string>
+    <string name="increasing_ring_interval_2seconds">2 seconds</string>
+    <string name="increasing_ring_interval_3seconds">3 seconds</string>
+    <string name="increasing_ring_interval_5seconds">5 seconds</string>
+    <string name="increasing_ring_interval_10seconds">10 seconds</string>
+
+    <!-- CM Updater -->
+    <string name="cmupdate_settings_title">CyanogenMod updates</string>
+    <string name="cmupdate_settings_summary">Check for, view or install available updates</string>
+
+<!-- Multi Sim Settings screen, Select Sub label -->
     <string name="sel_sub_title">Configure Subscriptions </string>
     <!-- Multi Sim Settings screen, Select Sub Summary label -->
     <string name="sel_sub_summary">Select the Subscription for SUB-1 and SUB-2</string>
@@ -4336,22 +4411,5 @@ found in the list of installed apps.</string>
     <string name="set_sms_error">Error in set sms subscription. Subscription not active.</string>
     <!-- Multi Sim Settings screen, Set VOICE error message -->
     <string name="set_voice_error">Error in set voice subscription. Subscription not active.</string>
-
-    <!-- Hostname setting -->
-    <string name="device_hostname">Device hostname</string>
-
-    <!-- Mobile networks, item title to go into the network settings -->
-    <string name="subscription_01_title">SUB 1</string>
-    <!-- Mobile networks, the item summary for the user to go into the network settings -->
-    <string name="subscription_01_summary">Set options for SUB1 network settings</string>
-    <!-- Mobile networks, item title to go into the network settings -->
-    <string name="subscription_02_title">SUB 2</string>
-    <!-- Mobile networks, the item summary for the user to go into the network settings -->
-    <string name="subscription_02_summary">Set options for SUB2 network settings</string>
-
-    <!-- A menu item in "About phone" that allows the user to update the phone with settings
-    from their cell phone carrier. The use of the string is similar to the string
-    "system_update_settings_list_item_title" in this project. [CHAR LIMIT=25] -->
-    <string name="additional_system_update_settings_list_item_title">Additional system updates</string>
 
 </resources>
