@@ -604,7 +604,7 @@
     <!-- About phone screen, Free memory info -->
     <string name="mem_info">Memory</string>
     <!-- About device screen, version of modification of Android. -->
-    <string name="mod_version">CyanogenMod version</string>
+    <string name="mod_version">my4ndr0id version</string>
     <string name="mod_version_default">Unknown</string>
     <!-- About device screen, build date of ROM. -->
     <string name="build_date">Build date</string>
