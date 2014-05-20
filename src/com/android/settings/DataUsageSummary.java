@@ -127,6 +127,7 @@ import com.android.settings.net.UidDetail;
 import com.android.settings.net.UidDetailProvider;
 import com.android.settings.widget.ChartDataUsageView;
 import com.android.settings.widget.ChartDataUsageView.DataUsageChartListener;
+import com.android.settings.widget.ChartNetworkSeriesView;
 import com.android.settings.widget.PieChartView;
 import com.google.android.collect.Lists;
 
@@ -184,6 +185,7 @@ public class DataUsageSummary extends Fragment {
     private static final String PREF_FILE = "data_usage";
     private static final String PREF_SHOW_WIFI = "show_wifi";
     private static final String PREF_SHOW_ETHERNET = "show_ethernet";
+    private static final String PREF_LINEAR_CHART = "linear_chart";
 
     private SharedPreferences mPrefs;
 
@@ -210,6 +212,7 @@ public class DataUsageSummary extends Fragment {
     private CycleAdapter mCycleAdapter;
 
     private ChartDataUsageView mChart;
+    private ChartNetworkSeriesView mSeries;
     private TextView mUsageSummary;
     private TextView mEmpty;
 
@@ -228,6 +231,7 @@ public class DataUsageSummary extends Fragment {
 
     private boolean mShowWifi = false;
     private boolean mShowEthernet = false;
+    private boolean mLinearChart = false;
 
     private NetworkTemplate mTemplate;
     private ChartData mChartData;
@@ -269,6 +273,7 @@ public class DataUsageSummary extends Fragment {
 
         mShowWifi = mPrefs.getBoolean(PREF_SHOW_WIFI, false);
         mShowEthernet = mPrefs.getBoolean(PREF_SHOW_ETHERNET, false);
+        mLinearChart = mPrefs.getBoolean(PREF_LINEAR_CHART, false);
 
         setHasOptionsMenu(true);
     }
@@ -349,6 +354,7 @@ public class DataUsageSummary extends Fragment {
         mCycleSpinner.setAdapter(mCycleAdapter);
         mCycleSpinner.setOnItemSelectedListener(mCycleListener);
 
+        mSeries = (ChartNetworkSeriesView) mHeader.findViewById(R.id.series);
         mChart = (ChartDataUsageView) mHeader.findViewById(R.id.chart);
         mChart.setListener(mChartListener);
         mChart.bindNetworkPolicy(null);
@@ -463,6 +469,10 @@ public class DataUsageSummary extends Fragment {
             showEthernet.setVisible(false);
             mShowEthernet = true;
         }
+
+        final MenuItem linearChart = menu.findItem(R.id.data_usage_menu_linear_chart);
+        linearChart.setVisible(true);
+        linearChart.setChecked(mLinearChart);
     }
 
     @Override
@@ -511,6 +521,14 @@ public class DataUsageSummary extends Fragment {
                 mPrefs.edit().putBoolean(PREF_SHOW_ETHERNET, mShowEthernet).apply();
                 item.setChecked(mShowEthernet);
                 updateTabs();
+                return true;
+            }
+            case R.id.data_usage_menu_linear_chart: {
+                mLinearChart = !item.isChecked();
+                mPrefs.edit().putBoolean(PREF_LINEAR_CHART, mLinearChart).apply();
+                item.setChecked(mLinearChart);
+                mChart.resetVertMax();
+                updateBody();
                 return true;
             }
         }
@@ -626,7 +644,8 @@ public class DataUsageSummary extends Fragment {
     private OnTabChangeListener mTabListener = new OnTabChangeListener() {
         /** {@inheritDoc} */
         public void onTabChanged(String tabId) {
-            // user changed tab; update body
+            // user changed tab; reset estimated data and update body
+            mSeries.resetMaxEstimate();
             updateBody();
         }
     };
@@ -1811,7 +1830,7 @@ public class DataUsageSummary extends Fragment {
             final long limitBytes = editor.getPolicyLimitBytes(template);
 
             bytesPicker.setMaxValue(Integer.MAX_VALUE);
-            if (warningBytes != WARNING_DISABLED) {
+            if (warningBytes != WARNING_DISABLED && limitBytes > 0) {
                 bytesPicker.setMinValue((int) (warningBytes / MB_IN_BYTES) + 1);
             } else {
                 bytesPicker.setMinValue(0);
