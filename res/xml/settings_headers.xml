@@ -136,7 +136,6 @@
         <intent android:action="com.android.settings.MANUFACTURER_APPLICATION_SETTING" />
     </header>
 
-
     <!-- PERSONAL -->
     <header android:title="@string/header_category_personal" />
 
