@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2011 The Android Open Source Project
+<!-- Copyright (C) 2012 The CyanogenMod Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -18,24 +18,11 @@
         android:title="@string/location_settings_title">
 
     <PreferenceCategory
-            android:title="@string/usb_connection_category" />
+            android:title="@string/storage_layout" />
 
-    <CheckBoxPreference
-        android:key="usb_mtp"
-        android:title="@string/usb_mtp_title"
-        android:summary="@string/usb_mtp_summary"
-        />
-
-    <CheckBoxPreference
-        android:key="usb_ptp"
-        android:title="@string/usb_ptp_title"
-        android:summary="@string/usb_ptp_summary"
-        />
-
-    <CheckBoxPreference
-        android:key="usb_mass_storage"
-        android:title="@string/usb_mass_storage_title"
-        android:summary="@string/usb_mass_storage_summary"
-        />
+    <CheckBoxPreference android:key="pref_switch_storage"
+        android:title="@string/storage_switch_title"
+        android:summaryOn="@string/storage_switch_summary_on"
+        android:summaryOff="@string/storage_switch_summary_off" />
 
 </PreferenceScreen>
