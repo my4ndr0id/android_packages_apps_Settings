@@ -1099,6 +1099,14 @@ alog [CHAR LIMIT=none] -->
     <!-- Band mode screen. Statusm essage when successful. -->
     <string name="band_mode_succeeded">Successful</string>
 
+    <!-- **** TEMPORARY LOCATION FOR CMPARTS MERGE - START **** -->
+
+    <!-- Temporary - stubed preference - to be removed once all preferences have been merged -->
+    <string name="stubbed">Preference Stub</string>
+    <string name="stubbed_summary">Temporary placeholder until functionality merged</string>
+    
+    <!-- **** TEMPORARY LOCATION FOR CMPARTS MERGE - END **** -->
+    
     <!-- Instructions after the user changes the mass storage settings -->
     <string name="sdcard_changes_instructions">Changes take effect when USB cable is reconnected</string>
     <!-- Enable USB mass storage mode checkbox title -->
