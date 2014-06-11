@@ -334,7 +334,8 @@ public class Settings extends PreferenceActivity implements ButtonBarHandler {
             if (id == R.id.dock_settings) {
                 if (!needsDockSettings())
                     target.remove(header);
-            } else if (id == R.id.operator_settings || id == R.id.manufacturer_settings) {
+            } else if (id == R.id.operator_settings || id == R.id.manufacturer_settings ||
+                    id == R.id.advanced_settings) {
                 Utils.updateHeaderToSpecificActivityFromMetaDataOrRemove(this, target, header);
             } else if (id == R.id.launcher_settings) {
                 Intent launcherIntent = new Intent(Intent.ACTION_MAIN);
@@ -638,4 +639,5 @@ public class Settings extends PreferenceActivity implements ButtonBarHandler {
     public static class AdvancedWifiSettingsActivity extends Settings { /* empty */ }
     public static class TextToSpeechSettingsActivity extends Settings { /* empty */ }
     public static class AndroidBeamSettingsActivity extends Settings { /* empty */ }
+    public static class AnonymousStatsActivity extends Settings { /* empty */ }
 }
