@@ -1,6 +1,5 @@
 /*
  * Copyright (C) 2008 The Android Open Source Project
- * Copyright (c) 2012, Code Aurora Forum. All rights reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +27,6 @@ public class ProgressCategory extends ProgressCategoryBase {
     private boolean mProgress = false;
     private Preference mNoDeviceFoundPreference;
     private boolean mNoDeviceFoundAdded;
-    private boolean notFound;
 
     public ProgressCategory(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -52,16 +50,12 @@ public class ProgressCategory extends ProgressCategoryBase {
                 removePreference(mNoDeviceFoundPreference);
                 mNoDeviceFoundAdded = false;
             }
-            if (mProgress) notFound = noDeviceFound;
         } else {
             if (!mNoDeviceFoundAdded) {
                 if (mNoDeviceFoundPreference == null) {
                     mNoDeviceFoundPreference = new Preference(getContext());
                     mNoDeviceFoundPreference.setLayoutResource(R.layout.preference_empty_list);
-                    if (notFound) {
-                       mNoDeviceFoundPreference.setTitle(R.string.bluetooth_no_devices_found);
-                       notFound = false;
-                    }
+                    mNoDeviceFoundPreference.setTitle(R.string.bluetooth_no_devices_found);
                     mNoDeviceFoundPreference.setSelectable(false);
                 }
                 addPreference(mNoDeviceFoundPreference);
