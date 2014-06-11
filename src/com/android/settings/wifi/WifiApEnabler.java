@@ -16,8 +16,6 @@
 
 package com.android.settings.wifi;
 
-import com.android.internal.telephony.ITelephony;
-import com.android.internal.telephony.RILConstants;
 import com.android.settings.R;
 import com.android.settings.WirelessSettings;
 
@@ -35,9 +33,6 @@ import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.os.RemoteException;
-import android.os.ServiceManager;
-import android.os.SystemProperties;
 import android.preference.CheckBoxPreference;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -45,7 +40,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class WifiApEnabler {
-    private static final String TAG = "WifiApEnabler";
     private final Context mContext;
     private final CheckBoxPreference mCheckBox;
     private final CharSequence mOriginalSummary;
@@ -55,8 +49,6 @@ public class WifiApEnabler {
 
     ConnectivityManager mCm;
     private String[] mWifiRegexs;
-    private int oldPowerLevel;
-    private boolean mTransmitPower = SystemProperties.getBoolean("ro.ril.transmitpower",false);
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
@@ -94,14 +86,6 @@ public class WifiApEnabler {
         mIntentFilter = new IntentFilter(WifiManager.WIFI_AP_STATE_CHANGED_ACTION);
         mIntentFilter.addAction(ConnectivityManager.ACTION_TETHER_STATE_CHANGED);
         mIntentFilter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
-
-        // If the device is an APQ device then there is no modem so
-        // do not set transmit power
-        if (SystemProperties.get("ro.baseband").equalsIgnoreCase("apq")) {
-            Log.d(TAG, "ro.baseband is set to apq");
-            mTransmitPower = false;
-        }
-        Log.d(TAG, "ro.ril.transmitpower property is set to " + mTransmitPower);
     }
 
     public void resume() {
@@ -126,34 +110,6 @@ public class WifiApEnabler {
 
     public void setSoftapEnabled(boolean enable) {
         final ContentResolver cr = mContext.getContentResolver();
-        boolean result = false;
-
-        if (mTransmitPower) {
-            /* Disable here, enabled on receiving success broadcast */
-            mCheckBox.setEnabled(false);
-
-            // Change transmit power based on FCC regulation (CFR47 2.1093) before
-            // enabling/disabling the WiFi hotspot
-            if (enable) {
-                // Request modem to reduce the transmit power when
-                // hotspot is enabled
-                result = setTransmitPower(RILConstants.TRANSMIT_POWER_WIFI_HOTSPOT);
-                oldPowerLevel = RILConstants.TRANSMIT_POWER_DEFAULT;
-            } else {
-                // Request modem to restore the transmit power to default values
-                // when hotspot is disabled
-                result = setTransmitPower(RILConstants.TRANSMIT_POWER_DEFAULT);
-                oldPowerLevel = RILConstants.TRANSMIT_POWER_WIFI_HOTSPOT;
-            }
-
-            if (result == false) {
-                Log.d(TAG, "Failed to set the transmit power");
-                mCheckBox.setEnabled(true);
-                mCheckBox.setSummary(R.string.wifi_tether_transmit_power_error);
-                return;
-            }
-        }
-
         /**
          * Disable Wifi if enabling tethering
          */
@@ -168,7 +124,6 @@ public class WifiApEnabler {
             /* Disable here, enabled on receiving success broadcast */
             mCheckBox.setEnabled(false);
         } else {
-            mCheckBox.setEnabled(true);
             mCheckBox.setSummary(R.string.wifi_error);
         }
 
@@ -250,37 +205,6 @@ public class WifiApEnabler {
                 mCheckBox.setChecked(false);
                 mCheckBox.setSummary(R.string.wifi_error);
                 enableWifiCheckBox();
-
-                if (mTransmitPower) {
-                    // In case of failure in enabling/disabling WiFi hotspot restore
-                    // the transmit power level to the old power level
-                    Log.e(TAG, "Fail to enable/disable the WiFi hotspot, " +
-                    "reverting the transmit power level");
-                    setTransmitPower(oldPowerLevel);
-                }
         }
-    }
-
-    /**
-     * Sets the transmit power level
-     *
-     * @param powerLevel
-     */
-    private boolean setTransmitPower(int powerLevel) {
-        boolean result = false;
-        ITelephony phone = ITelephony.Stub.asInterface(ServiceManager.checkService("phone"));
-        if (phone == null) {
-            Log.e(TAG, "ITelephony interface is null, can not set transmit power");
-            return false;
-        }
-
-        // Request modem to change the transmit power
-        try {
-            Log.d(TAG, "Setting transmit power to " + powerLevel);
-            result = phone.setTransmitPower(powerLevel);
-        } catch (RemoteException ex) {
-            Log.e(TAG, "RemoteException during setting max transmit power", ex);
-        }
-        return result;
     }
 }
