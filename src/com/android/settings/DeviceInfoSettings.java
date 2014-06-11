@@ -114,7 +114,7 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment {
                 PROPERTY_URL_SAFETYLEGAL);
 
         // Remove Baseband version if wifi-only device
-        if (Utils.isWifiOnly(getActivity()) || (Utils.MULTISIM_RESID == resIndex)) {
+        if (Utils.isWifiOnly(getActivity())) {
             getPreferenceScreen().removePreference(findPreference(KEY_BASEBAND_VERSION));
         }
 
